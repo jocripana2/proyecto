@@ -1,6 +1,27 @@
+// BOARD GAME PUZZLE
+/*// **********       PRIVATE VARIABLES      **********
+  boardRows      - Number of Rows on the board
+  boardCols      - Number of Columns on the board
+  nElements      - boardRows * boardCols, to handle imageList
+  spaceBetweenElements  - Space between icons when displaying board
+  currentSelection      - When selecting icons, this variable indicate which
+                          icon is selected, so the user cannot select a
+                          different one.
+  origin         - (x,y) coordinate of top left corner of the board
+  currentPos     - Currently highligted icon (not selected)
+  iconWidth      - Icon width in pixels
+  iconHeight     - Icon height in pixels
+  board          - "Pointer" to imageList icon element
+  highlightBoard - Secondary board that stores which elements are selected 
+  
+  // **********       PUBLIC VARIABLES       **********
+  imageList      - List (array) of icons to be displayed on the board
+*/
+
 public class BoardGame
 {
   ///////////////////////////////////////////////
+  // Auxiliary inner class to handle Points
   class Point
   {
     Point(int x, int y)
@@ -31,9 +52,6 @@ public class BoardGame
     
     board = new int[boardRows][boardCols];
     highlightBoard = new boolean[boardRows][boardCols];
-    highlightVec = new Point[nElements];
-    for(int i=0; i<nElements; i++)
-      highlightVec[i] = new Point(-1,-1);
   }
   
   public BoardGame(int boardRows, int boardCols)
@@ -50,9 +68,6 @@ public class BoardGame
     
     board = new int[boardRows][boardCols];
     highlightBoard = new boolean[boardRows][boardCols];
-    highlightVec = new Point[nElements];
-    for(int i=0; i<nElements; i++)
-      highlightVec[i] = new Point(-1,-1);
   }
   
   // **************************************************
@@ -78,7 +93,7 @@ public class BoardGame
          rect(x, y, iconWidth, iconHeight);
        }
      }
-     
+     // Current position
      int x = currentPos.x*(iconWidth+spaceBetweenElements) + origin.x;
      int y = currentPos.y*(iconHeight+spaceBetweenElements) + origin.y;
      stroke(#FFFF00);
@@ -87,7 +102,7 @@ public class BoardGame
  
    public void init()
    {
-     // Assign random values to the board, each integer value represent
+     // Assign random values to the board, each integer value represents
      // a different icon. Verify if the new board is valid (has at least
      // one chain to break), and reassign new values when it is not.
      randomSeed(millis());
@@ -107,6 +122,7 @@ public class BoardGame
      currentSelection = -1;
    }
  
+   // When selecting icons on the board, to form chains
    public void highlight(int x, int y, boolean on)
    {
      int C = (x-origin.x) / (iconWidth+spaceBetweenElements);
@@ -140,6 +156,7 @@ public class BoardGame
      }
    }
    
+   // Deselect all
    public void highlightOff()
    {
      // Put all highlightBoard to false, so the
@@ -275,6 +292,10 @@ public class BoardGame
   
   private boolean validBoard()
   {
+    // TODO: Implement verification of a valid board. A valid board
+    // has at least one chain of three connected icons. 8-neighbor
+    // connection is applied. In C++, I would use a Queue, but I don't
+    // know how to use a Queue in Java
     return true;
   }
 
@@ -287,7 +308,6 @@ public class BoardGame
   private int iconWidth, iconHeight;
   private int[][] board;
   private boolean[][] highlightBoard;
-  private Point[] highlightVec;
   
   // **************************************************
   // **********       PUBLIC VARIABLES       **********
