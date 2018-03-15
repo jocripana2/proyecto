@@ -193,7 +193,7 @@ void initGame()
   score = 0;
   
   // gameState
-  gameState = GameState.GAMEOVER;
+  gameState = GameState.START;
 }
 
 void gameMechanics()
